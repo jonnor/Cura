@@ -47,7 +47,7 @@ def getEngineFilename():
 		return '/usr/bin/CuraEngine'
 	if os.path.isfile('/usr/local/bin/CuraEngine'):
 		return '/usr/local/bin/CuraEngine'
-	return ''
+	return 'CuraEngine/build/CuraEngine'
 
 class EngineResult(object):
 	"""
@@ -318,6 +318,7 @@ class Engine(object):
 		commandList = [self._engine_executable, '-v', '-p']
 		for k, v in self._engineSettings(extruderCount).iteritems():
 			commandList += ['-s', '%s=%s' % (k, str(v))]
+		commandList += ['-s', 'infillPattern=4']
 		commandList += ['-g', '%d' % (self._serverPortNr)]
 		if overrides is not None:
 			profile.resetTempOverride()
@@ -439,6 +440,7 @@ class Engine(object):
 		line = stderr.readline()
 		while len(line) > 0:
 			line = line.strip()
+			print line
 			if line.startswith('Progress:'):
 				line = line.split(':')
 				if line[1] == 'process':
